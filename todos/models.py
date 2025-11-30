@@ -1,9 +1,25 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
-    pass
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to.',
+        related_name='todos_user_set',
+        related_query_name='todos_user',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name='todos_user_set',
+        related_query_name='todos_user',
+    )
 
 class Todo(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
