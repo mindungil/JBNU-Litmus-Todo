@@ -1,0 +1,10 @@
+<li class="todo-item
+    {% if type == 'done' %} done-item{% endif %}
+    {% if type == 'overdue' %} overdue-item{% endif %}"
+    data-id="{{ todo.id }}"
+    data-title="{{ todo.title|escapejs }}"
+    data-end="{{ todo.end_at|date:'Y-m-d\\TH:i' }}"
+    onclick="openEditModalFromElement(this)"
+>
+  {{ todo.title }}
+</li>

@@ -46,7 +46,59 @@
     font-weight: bold;
     margin-left: 8px;
   }
+  .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .btn-cancel {
+    background: transparent;
+    color: #777;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-danger {
+    background: transparent;
+    color: red;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }  
 </style>
+
+<script>
+    function openEditModalFromElement(el) {
+        const id = el.dataset.id;
+        const title = el.dataset.title;
+        const endAt = el.dataset.end;
+      
+        document.getElementById("edit-id").value = id;
+        document.getElementById("edit-title").value = title;
+        document.getElementById("edit-end_at").value = endAt || "";
+      
+        document.getElementById("delete-form").action = `/delete/${id}/`;
+      
+        document.getElementById("edit-modal").classList.remove("hidden");
+      }
+      
+</script>
 
 <h3 class="todo-section">
   to do <span class="add-btn" onclick="openAddModal()">➕</span>

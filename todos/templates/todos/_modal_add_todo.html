@@ -1,0 +1,22 @@
+<div id="add-modal" class="modal-bg hidden">
+    <div class="modal">
+      <span class="close-btn" onclick="closeModals()">✖</span>
+      <h3>To Do List</h3>
+  
+      <form action="{% url 'add_todo' %}" method="post" class="modal-form">
+        {% csrf_token %}
+  
+        <label>to do</label>
+        <input type="text" name="title" required>
+  
+        <label>기한</label>
+        <input type="datetime-local" name="end_at">
+  
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModals()">취소</button>
+          <button type="submit" class="btn-primary">저장 후 닫기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

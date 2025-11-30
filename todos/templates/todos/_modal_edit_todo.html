@@ -1,0 +1,29 @@
+<div id="edit-modal" class="modal-bg hidden">
+    <div class="modal">
+      <span class="close-btn" onclick="closeModals()">✖</span>
+      <h3>To Do</h3>
+  
+      <form action="{% url 'edit_todo' %}" method="post" class="modal-form">
+        {% csrf_token %}
+        <input type="hidden" id="edit-id" name="id">
+  
+        <label>to do</label>
+        <input type="text" id="edit-title" name="title" required>
+  
+        <label>기한</label>
+        <input type="datetime-local" id="edit-end_at" name="end_at">
+  
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModals()">취소</button>
+          <button type="submit" class="btn-primary">수정</button>
+        </div>
+      </form>
+  
+      <form id="delete-form" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-danger">삭제</button>
+      </form>
+  
+    </div>
+  </div>
+  
