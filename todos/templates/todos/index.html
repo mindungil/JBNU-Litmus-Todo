@@ -84,6 +84,24 @@
 </style>
 
 <script>
+    function submitAddTodo(event) {
+        event.preventDefault();
+        const form = event.target;
+      
+        const formData = new FormData(form);
+      
+        fetch("{% url 'add_todo' %}", {
+          method: "POST",
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+          closeModals();
+          addTodoToList(data);
+          form.reset(); // 입력창 초기화
+        });
+      }
+      
     function openEditModalFromElement(el) {
         const id = el.dataset.id;
         const title = el.dataset.title;

@@ -3,7 +3,7 @@
       <span class="close-btn" onclick="closeModals()">✖</span>
       <h3>To Do List</h3>
   
-      <form action="{% url 'add_todo' %}" method="post" class="modal-form">
+      <form action="{% url 'add_todo' %}" method="post" class="modal-form" onsubmit="submitAddTodo(event)">
         {% csrf_token %}
   
         <label>to do</label>
