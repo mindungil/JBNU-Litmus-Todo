@@ -1,18 +1,12 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from .views import todo_list, add_todo, toggle_complete, delete_todo, edit_todo
-from .views.auth import register, logout_view
+from .views.auth import register, login_view, logout_view
 
 urlpatterns = [
     path('', todo_list, name="todo_list"),
 
-    # auth 추가
-    path('accounts/login/', auth_views.LoginView.as_view(
-        template_name='todos/auth/login.html'
-    ), name='login'),
-
+    path('accounts/login/', login_view, name='login'),
     path('accounts/logout/', logout_view, name='logout'),
-
     path('accounts/register/', register, name="register"),
 
     path('add/', add_todo, name="add_todo"),

@@ -254,6 +254,7 @@
       
 </script>
 
+{% if user.is_authenticated %}
 <div class="todo-container">
   <div class="todo-section">
     <h3>to do <span class="add-btn" onclick="openAddModal()">➕</span></h3>
@@ -273,5 +274,6 @@
 
 {% include "todos/_modal_add_todo.html" %}
 {% include "todos/_modal_edit_todo.html" %}
+{% endif %}
 
 {% endblock %}

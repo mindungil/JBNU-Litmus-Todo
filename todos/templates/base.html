@@ -4,6 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Todo App{% endblock %}</title>
+  <style>
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .form-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -18,17 +45,57 @@
         <img src="{% static 'todos/todolist.png' %}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px; display: inline-block;">
         <span style="font-weight: 500; font-size: 18px;">{{ user.username }}님 / </span>
         <a href="{% url 'logout' %}">로그아웃</a>
-      {% else %}
-        <a href="{% url 'login' %}">로그인 하기</a>
-        <a href="{% url 'register' %}">회원가입 하기</a>
       {% endif %}
     </div>
   </nav>
 </header>
 
+<style>
+  main {
+    display: flex;
+    flex-direction: column;      /* 세로로 정렬 */
+    align-items: center;         /* 가로 가운데 */
+    justify-content: center;     /* 세로 가운데 */
+    min-height: 100vh;           /* 화면 전체 높이 기준 */
+    text-align: center;          /* 텍스트도 가운데 */
+  }
+  
+  .center-buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;                   /* 버튼 사이 간격 */
+  }
+  
+  .center-buttons a {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .center-buttons a:hover {
+    background-color: #0056b3;
+  }
+  
+</style>
 <hr>
 
+# TODOLIST
+#1 include로 auth 노출시키기(컴포넌트마냥)
+#2 css 제대로 적용하기(색깔, flex, 그라데이션))
 <main>
+  {% if not user.is_authenticated %}
+    {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
+    <h1>To Do List</h1>
+    <div class="center-buttons">`
+      <a href="{% url 'login' %}">로그인 하기</a>
+      <a href="{% url 'register' %}">회원가입 하기</a>
+    </div>
+    {% endif %}
+  {% endif %}
   {% block content %}
   {% endblock %}
 </main>
