@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,12 +10,13 @@
   <nav style="display: flex; justify-content: space-between; align-items: center;">
     <div>
       {% if user.is_authenticated %}
-        <span>To Do List</span>
+        <span style="font-weight: bold; font-size: 32px;">To Do List</span>
       {% endif %}
     </div>
     <div>
       {% if user.is_authenticated %}
-        <span>{{ user.username }}님 / </span>
+        <img src="{% static 'todos/todolist.png' %}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px; display: inline-block;">
+        <span style="font-weight: 500; font-size: 18px;">{{ user.username }}님 / </span>
         <a href="{% url 'logout' %}">로그아웃</a>
       {% else %}
         <a href="{% url 'login' %}">로그인 하기</a>
