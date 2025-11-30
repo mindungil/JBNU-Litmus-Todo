@@ -4,7 +4,11 @@
     data-id="{{ todo.id }}"
     data-title="{{ todo.title|escapejs }}"
     data-end="{{ todo.end_at|date:'Y-m-d\\TH:i' }}"
-    onclick="openEditModalFromElement(this)"
+    data-type="{{ type }}"
 >
-  {{ todo.title }}
+  <input type="checkbox" 
+         {% if type == 'done' %}checked{% endif %}
+         onchange="toggleTodoComplete(this, {{ todo.id }})"
+         onclick="event.stopPropagation()">
+  <span onclick="openEditModalFromElement(this.parentElement)">{{ todo.title }}</span>
 </li>

@@ -53,7 +53,10 @@ def toggle_complete(request, id):
     todo = get_object_or_404(Todo, id=id, user=request.user)
     todo.is_completed = not todo.is_completed
     todo.save()
-    return redirect("todo_list")
+    return JsonResponse({
+        "id": todo.id,
+        "is_completed": todo.is_completed
+    })
 
 @login_required
 def delete_todo(request, id):

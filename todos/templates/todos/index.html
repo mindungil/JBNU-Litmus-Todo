@@ -33,6 +33,13 @@
     border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .todo-item span {
+    flex: 1;
   }
 
   .done-item {
@@ -146,8 +153,19 @@
         newItem.setAttribute("data-id", data.id);
         newItem.setAttribute("data-title", data.title);
         newItem.setAttribute("data-end", data.end_at || "");
-        newItem.setAttribute("onclick", "openEditModalFromElement(this)");
-        newItem.textContent = data.title;
+        newItem.setAttribute("data-type", "todo");
+        
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.setAttribute("onchange", `toggleTodoComplete(this, ${data.id})`);
+        checkbox.setAttribute("onclick", "event.stopPropagation()");
+        
+        const span = document.createElement("span");
+        span.setAttribute("onclick", "openEditModalFromElement(this.parentElement)");
+        span.textContent = data.title;
+        
+        newItem.appendChild(checkbox);
+        newItem.appendChild(span);
         todoList.appendChild(newItem);
     }
 
@@ -182,6 +200,49 @@
       
         document.getElementById("edit-modal").classList.remove("hidden");
       }
+
+    function toggleTodoComplete(checkbox, todoId) {
+        fetch(`/complete/${todoId}/`, {
+            method: "GET"
+        })
+        .then(() => {
+            const todoItem = checkbox.closest(".todo-item");
+            const currentType = todoItem.dataset.type;
+            const todoTitle = todoItem.querySelector("span").textContent;
+            const todoEnd = todoItem.dataset.end;
+            const todoId = todoItem.dataset.id;
+
+            todoItem.remove();
+
+            let targetList;
+            if (currentType === "done") {
+                targetList = document.querySelector(".todo-section:first-of-type .todo-list");
+            } else {
+                targetList = document.querySelector(".todo-section:nth-of-type(2) .todo-list");
+            }
+
+            const newItem = document.createElement("li");
+            newItem.className = `todo-item ${currentType === "done" ? "" : "done-item"}`;
+            newItem.setAttribute("data-id", todoId);
+            newItem.setAttribute("data-title", todoTitle);
+            newItem.setAttribute("data-end", todoEnd || "");
+            newItem.setAttribute("data-type", currentType === "done" ? "todo" : "done");
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = currentType !== "done";
+            checkbox.setAttribute("onchange", `toggleTodoComplete(this, ${todoId})`);
+            checkbox.setAttribute("onclick", "event.stopPropagation()");
+            
+            const span = document.createElement("span");
+            span.setAttribute("onclick", "openEditModalFromElement(this.parentElement)");
+            span.textContent = todoTitle;
+            
+            newItem.appendChild(checkbox);
+            newItem.appendChild(span);
+            targetList.appendChild(newItem);
+        });
+    }
       
 </script>
 
