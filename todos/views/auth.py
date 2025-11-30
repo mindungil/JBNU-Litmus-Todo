@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.shortcuts import render, redirect
 
 User = get_user_model()
@@ -19,3 +19,7 @@ def register(request):
         form = CustomUserCreationForm()
 
     return render(request, "todos/auth/register.html", {"form": form})
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")

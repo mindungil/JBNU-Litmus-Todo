@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import todo_list, add_todo, toggle_complete, delete_todo, edit_todo
-from .views.auth import register
+from .views.auth import register, logout_view
 
 urlpatterns = [
     path('', todo_list, name="todo_list"),
@@ -11,7 +11,7 @@ urlpatterns = [
         template_name='todos/auth/login.html'
     ), name='login'),
 
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/logout/', logout_view, name='logout'),
 
     path('accounts/register/', register, name="register"),
 
