@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from ..models import Todo
 from django.utils import timezone
+from django.http import JsonResponse
 
 @login_required
 def todo_list(request):
@@ -22,13 +23,22 @@ def todo_list(request):
 @login_required
 def add_todo(request):
     if request.method == "POST":
-        Todo.objects.create(
+        title = request.POST.get("title")
+        end_at = request.POST.get("end_at") or None
+
+        new_todo = Todo.objects.create(
             user=request.user,
-            title=request.POST["title"],
-            start_at=request.POST.get("start_at", timezone.now()),
-            end_at=request.POST.get("end_at") or None,
+            title=title,
+            end_at=end_at
         )
-    return redirect("todo_list")
+
+        return JsonResponse({
+            "id": new_todo.id,
+            "title": new_todo.title,
+            "end_at": new_todo.end_at.strftime("%Y-%m-%dT%H:%M") if new_todo.end_at else "",
+            "status": "todo"
+        })
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 @login_required
 def toggle_complete(request, id):
@@ -37,18 +47,23 @@ def toggle_complete(request, id):
     todo.save()
     return redirect("todo_list")
 
-
 @login_required
 def delete_todo(request, id):
     todo = get_object_or_404(Todo, id=id, user=request.user)
     todo.delete()
-    return redirect("todo_list")
+    return JsonResponse({"id": id, "deleted": True})
 
 @login_required
 def edit_todo(request):
     if request.method == "POST":
-        todo = get_object_or_404(Todo, id=request.POST["id"], user=request.user)
-        todo.title = request.POST["title"]
-        todo.end_at = request.POST.get("end_at")
+        todo = get_object_or_404(Todo, id=request.POST.get("id"), user=request.user)
+        todo.title = request.POST.get("title")
+        todo.end_at = request.POST.get("end_at") or None
         todo.save()
-    return redirect("todo_list")
+
+        return JsonResponse({
+            "id": todo.id,
+            "title": todo.title,
+            "end_at": todo.end_at.strftime("%Y-%m-%dT%H:%M") if todo.end_at else "",
+        })
+    return JsonResponse({"error": "Invalid request"}, status=400)
