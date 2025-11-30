@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import todo_list, add_todo, toggle_complete, delete_todo
+from .views import todo_list, add_todo, toggle_complete, delete_todo, edit_todo
 from .views.auth import register
 
 urlpatterns = [
