@@ -202,43 +202,51 @@
       }
 
     function toggleTodoComplete(checkbox, todoId) {
+        const isChecked = checkbox.checked;
+        
         fetch(`/complete/${todoId}/`, {
             method: "GET"
         })
-        .then(() => {
+        .then(response => response.json())
+        .then(data => {
             const todoItem = checkbox.closest(".todo-item");
-            const currentType = todoItem.dataset.type;
             const todoTitle = todoItem.querySelector("span").textContent;
             const todoEnd = todoItem.dataset.end;
-            const todoId = todoItem.dataset.id;
 
             todoItem.remove();
 
             let targetList;
-            if (currentType === "done") {
-                targetList = document.querySelector(".todo-section:first-of-type .todo-list");
-            } else {
+            let newType;
+            let newClassName;
+            
+            if (isChecked) {
                 targetList = document.querySelector(".todo-section:nth-of-type(2) .todo-list");
+                newType = "done";
+                newClassName = "todo-item done-item";
+            } else {
+                targetList = document.querySelector(".todo-section:first-of-type .todo-list");
+                newType = "todo";
+                newClassName = "todo-item";
             }
 
             const newItem = document.createElement("li");
-            newItem.className = `todo-item ${currentType === "done" ? "" : "done-item"}`;
+            newItem.className = newClassName;
             newItem.setAttribute("data-id", todoId);
             newItem.setAttribute("data-title", todoTitle);
             newItem.setAttribute("data-end", todoEnd || "");
-            newItem.setAttribute("data-type", currentType === "done" ? "todo" : "done");
+            newItem.setAttribute("data-type", newType);
             
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = currentType !== "done";
-            checkbox.setAttribute("onchange", `toggleTodoComplete(this, ${todoId})`);
-            checkbox.setAttribute("onclick", "event.stopPropagation()");
+            const newCheckbox = document.createElement("input");
+            newCheckbox.type = "checkbox";
+            newCheckbox.checked = isChecked;
+            newCheckbox.setAttribute("onchange", `toggleTodoComplete(this, ${todoId})`);
+            newCheckbox.setAttribute("onclick", "event.stopPropagation()");
             
             const span = document.createElement("span");
             span.setAttribute("onclick", "openEditModalFromElement(this.parentElement)");
             span.textContent = todoTitle;
             
-            newItem.appendChild(checkbox);
+            newItem.appendChild(newCheckbox);
             newItem.appendChild(span);
             targetList.appendChild(newItem);
         });
