@@ -6,14 +6,21 @@
 </head>
 <body>
 <header>
-  <nav>
-    {% if user.is_authenticated %}
-      <span>{{ user.username }}님 / </span>
-      <a href="{% url 'logout' %}">로그아웃</a>
-    {% else %}
-      <a href="{% url 'login' %}">로그인 하기</a>
-      <a href="{% url 'register' %}">회원가입 하기</a>
-    {% endif %}
+  <nav style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      {% if user.is_authenticated %}
+        <span>To Do List</span>
+      {% endif %}
+    </div>
+    <div>
+      {% if user.is_authenticated %}
+        <span>{{ user.username }}님 / </span>
+        <a href="{% url 'logout' %}">로그아웃</a>
+      {% else %}
+        <a href="{% url 'login' %}">로그인 하기</a>
+        <a href="{% url 'register' %}">회원가입 하기</a>
+      {% endif %}
+    </div>
   </nav>
 </header>
 
