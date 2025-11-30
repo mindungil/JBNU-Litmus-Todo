@@ -4,6 +4,13 @@
 
 <h2>로그인</h2>
 
+{% if form.errors %}
+<div style="color: red;">
+  <p>로그인에 실패했습니다. 사용자 이름과 비밀번호를 확인해주세요.</p>
+  {{ form.non_field_errors }}
+</div>
+{% endif %}
+
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
