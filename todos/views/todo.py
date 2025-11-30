@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from ..models import Todo
 from django.utils import timezone
 from django.http import JsonResponse
+from datetime import datetime
 
 @login_required
 def todo_list(request):
@@ -24,7 +25,14 @@ def todo_list(request):
 def add_todo(request):
     if request.method == "POST":
         title = request.POST.get("title")
-        end_at = request.POST.get("end_at") or None
+        end_at_str = request.POST.get("end_at") or None
+        
+        end_at = None
+        if end_at_str:
+            try:
+                end_at = timezone.make_aware(datetime.strptime(end_at_str, "%Y-%m-%dT%H:%M"))
+            except ValueError:
+                pass
 
         new_todo = Todo.objects.create(
             user=request.user,
@@ -58,7 +66,16 @@ def edit_todo(request):
     if request.method == "POST":
         todo = get_object_or_404(Todo, id=request.POST.get("id"), user=request.user)
         todo.title = request.POST.get("title")
-        todo.end_at = request.POST.get("end_at") or None
+        end_at_str = request.POST.get("end_at") or None
+        
+        end_at = None
+        if end_at_str:
+            try:
+                end_at = timezone.make_aware(datetime.strptime(end_at_str, "%Y-%m-%dT%H:%M"))
+            except ValueError:
+                pass
+        
+        todo.end_at = end_at
         todo.save()
 
         return JsonResponse({

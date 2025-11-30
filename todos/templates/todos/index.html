@@ -3,8 +3,19 @@
 {% block content %}
 
 <style>
+  .todo-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
   .todo-section {
-    margin-bottom: 24px;
+    flex: 1;
+    min-width: 200px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
 
   .todo-list {
@@ -36,7 +47,8 @@
   }
 
   h3 {
-    margin-top: 24px;
+    margin-top: 0;
+    margin-bottom: 12px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 4px;
   }
@@ -46,6 +58,40 @@
     font-weight: bold;
     margin-left: 8px;
   }
+
+  .modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-bg.hidden {
+    display: none;
+  }
+
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    min-width: 300px;
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
   .modal-form {
     display: flex;
     flex-direction: column;
@@ -84,6 +130,27 @@
 </style>
 
 <script>
+    function openAddModal() {
+        document.getElementById("add-modal").classList.remove("hidden");
+    }
+
+    function closeModals() {
+        document.getElementById("add-modal").classList.add("hidden");
+        document.getElementById("edit-modal").classList.add("hidden");
+    }
+
+    function addTodoToList(data) {
+        const todoList = document.querySelector(".todo-section:first-of-type .todo-list");
+        const newItem = document.createElement("li");
+        newItem.className = "todo-item";
+        newItem.setAttribute("data-id", data.id);
+        newItem.setAttribute("data-title", data.title);
+        newItem.setAttribute("data-end", data.end_at || "");
+        newItem.setAttribute("onclick", "openEditModalFromElement(this)");
+        newItem.textContent = data.title;
+        todoList.appendChild(newItem);
+    }
+
     function submitAddTodo(event) {
         event.preventDefault();
         const form = event.target;
@@ -98,7 +165,7 @@
         .then(data => {
           closeModals();
           addTodoToList(data);
-          form.reset(); // 입력창 초기화
+          form.reset();
         });
       }
       
@@ -118,20 +185,22 @@
       
 </script>
 
-<h3 class="todo-section">
-  to do <span class="add-btn" onclick="openAddModal()">➕</span>
-</h3>
-{% include "todos/_todo_list.html" with todos=undone type="todo" %}
+<div class="todo-container">
+  <div class="todo-section">
+    <h3>to do <span class="add-btn" onclick="openAddModal()">➕</span></h3>
+    {% include "todos/_todo_list.html" with todos=undone type="todo" %}
+  </div>
 
-<h3 class="todo-section">
-  end to do
-</h3>
-{% include "todos/_todo_list.html" with todos=done type="done" %}
+  <div class="todo-section">
+    <h3>end to do</h3>
+    {% include "todos/_todo_list.html" with todos=done type="done" %}
+  </div>
 
-<h3 class="todo-section">
-  not end to do
-</h3>
-{% include "todos/_todo_list.html" with todos=overdue type="overdue" %}
+  <div class="todo-section">
+    <h3>not end to do</h3>
+    {% include "todos/_todo_list.html" with todos=overdue type="overdue" %}
+  </div>
+</div>
 
 {% include "todos/_modal_add_todo.html" %}
 {% include "todos/_modal_edit_todo.html" %}
