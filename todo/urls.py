@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.urls import path
-from todos import views
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.todo_list, name='todo_list'),
+    path('', include('todos.urls')), 
+    path('accounts/', include('django.contrib.auth.urls')), 
 ]
