@@ -1,43 +1,69 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        .todo-item {
-            background: #f5f5f5;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-        .completed {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-    </style>
-</head>
-<body>
-    <h1>Todo List</h1>
-    {% for todo in todos %}
-    <div class="todo-item {% if todo.completed %}completed{% endif %}">
-        <h3>{{ todo.title }}</h3>
-        {% if todo.description %}
-        <p>{{ todo.description }}</p>
-        {% endif %}
-        <small>생성일: {{ todo.created_at|date:"Y-m-d H:i" }}</small>
-    </div>
-    {% empty %}
-    <p>할 일이 없습니다.</p>
-    {% endfor %}
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}To Do List{% endblock %}
+{% block content %}
+
+<style>
+  .todo-section {
+    margin-bottom: 24px;
+  }
+
+  .todo-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .todo-item {
+    padding: 6px 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .done-item {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .overdue-item {
+    color: #888;
+    text-decoration: line-through;
+    border-bottom: 1px solid #ccc;
+  }
+
+  h3 {
+    margin-top: 24px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+  }
+
+  .add-btn {
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 8px;
+  }
+</style>
+
+<h3 class="todo-section">
+  to do <span class="add-btn" onclick="openAddModal()">➕</span>
+</h3>
+{% include "todos/_todo_list.html" with todos=undone type="todo" %}
+
+<h3 class="todo-section">
+  end to do
+</h3>
+{% include "todos/_todo_list.html" with todos=done type="done" %}
+
+<h3 class="todo-section">
+  not end to do
+</h3>
+{% include "todos/_todo_list.html" with todos=overdue type="overdue" %}
+
+{% include "todos/_modal_add_todo.html" %}
+{% include "todos/_modal_edit_todo.html" %}
+
+{% endblock %}

@@ -43,3 +43,12 @@ def delete_todo(request, id):
     todo = get_object_or_404(Todo, id=id, user=request.user)
     todo.delete()
     return redirect("todo_list")
+
+@login_required
+def edit_todo(request):
+    if request.method == "POST":
+        todo = get_object_or_404(Todo, id=request.POST["id"], user=request.user)
+        todo.title = request.POST["title"]
+        todo.end_at = request.POST.get("end_at")
+        todo.save()
+    return redirect("todo_list")

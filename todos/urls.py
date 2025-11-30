@@ -8,4 +8,6 @@ urlpatterns = [
     path('complete/<int:id>/', toggle_complete, name="toggle_complete"),
     path('delete/<int:id>/', delete_todo, name="delete_todo"),
     path('register/', register, name="register"),
+    path("edit/", edit_todo, name="edit_todo"),
+
 ]
