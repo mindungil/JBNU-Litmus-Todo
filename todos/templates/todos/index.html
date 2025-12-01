@@ -5,17 +5,22 @@
 <style>
   .todo-container {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 80px;
+    flex-wrap: nowrap;
+    max-width: 1400px;
+    margin: 80px auto 100px auto;
   }
 
   .todo-section {
-    flex: 1;
-    min-width: 200px;
-    padding: 16px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 0 0 360px;
+    min-width: 340px;
+    min-height: 400px;
+    padding: 40px 44px;
+    background: linear-gradient(to top, #7aa8ff 0%, #c4d9ff 100%);
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
 
   .todo-list {
@@ -54,16 +59,20 @@
   }
 
   h3 {
-    margin-top: 0;
-    margin-bottom: 12px;
+    margin-top: 8px;
+    margin-bottom: 24px;
     border-bottom: 1px solid #ddd;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
+    font-size: 1.3rem;
+    text-align: center;
+    position: relative;
   }
 
   .add-btn {
     cursor: pointer;
     font-weight: bold;
-    margin-left: 8px;
+    position: absolute;
+    right: 0;
   }
 
   .modal-bg {

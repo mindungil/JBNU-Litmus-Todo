@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <title>{% block title %}Todo App{% endblock %}</title>
   <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(to top, #8fb4ff 0%, #e6f0ff 100%);
+    }
+
     .form-group {
       margin-bottom: 15px;
     }
@@ -33,7 +39,7 @@
   </style>
 </head>
 <body>
-<header>
+<header style="padding: 20px 50px;">
   <nav style="display: flex; justify-content: space-between; align-items: center;">
     <div>
       {% if user.is_authenticated %}
@@ -53,11 +59,12 @@
 <style>
   main {
     display: flex;
-    flex-direction: column;      /* 세로로 정렬 */
-    align-items: center;         /* 가로 가운데 */
-    justify-content: center;     /* 세로 가운데 */
-    min-height: 100vh;           /* 화면 전체 높이 기준 */
-    text-align: center;          /* 텍스트도 가운데 */
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 50px 60px 80px 60px;
+    box-sizing: border-box;
+    text-align: center;
   }
   
   .center-buttons {
@@ -85,7 +92,7 @@
 
 # TODOLIST
 #1 include로 auth 노출시키기(컴포넌트마냥)
-#2 css 제대로 적용하기(색깔, flex, 그라데이션))
+#2 css 제대로 적용하기(색깔, flex, 그라데이션)
 <main>
   {% if not user.is_authenticated %}
     {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
