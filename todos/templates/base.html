@@ -90,9 +90,6 @@
 </style>
 <hr>
 
-# TODOLIST
-#1 include로 auth 노출시키기(컴포넌트마냥)
-#2 css 제대로 적용하기(색깔, flex, 그라데이션)
 <main>
   {% if not user.is_authenticated %}
     {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}

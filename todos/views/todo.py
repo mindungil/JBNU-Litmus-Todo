@@ -5,8 +5,10 @@ from django.utils import timezone
 from django.http import JsonResponse
 from datetime import datetime
 
-@login_required
 def todo_list(request):
+    if not request.user.is_authenticated:
+        return render(request, "todos/index.html", {"undone": [], "done": [], "overdue": [], "now": None})
+    
     now = timezone.now()
 
     undone = Todo.objects.filter(user=request.user, is_completed=False, end_at__gt=now)
